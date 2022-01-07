@@ -3,8 +3,8 @@ const User = require('../models/user');
 const auth = require('../middleware/auth');
 
 router.post('/users', async (req, res) => {
-  const user = new User(req.body);
   try {
+    const user = new User(req.body);
     const inputs = Object.keys(req.body);
     const allowedFields = ['name', 'email', 'password'];
 
