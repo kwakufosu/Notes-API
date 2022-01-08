@@ -16,4 +16,45 @@ router.post('/note', auth, async (req, res) => {
   }
 });
 
+router.get('/note/:id', auth, async (req, res) => {
+  const _id = req.params.id;
+  try {
+    const note = await Note.findOne({ id: _id, owner_id: req.user._id });
+    if (!note) {
+      return res.status(404).send();
+    }
+    res.send(note);
+  } catch (e) {
+    res.status(404).send();
+  }
+});
+
+router.get('/note', auth, async (req, res) => {
+  try {
+    const note = await Note.find({ owner_id: req.user._id });
+    if (!note) {
+      return res.status(404).send();
+    }
+    res.send(note);
+  } catch (e) {
+    res.status(404).send();
+  }
+});
+
+router.delete('/note/:id', auth, async (req, res) => {
+  const _id = req.params.id;
+  try {
+    const note = await Note.findOneAndDelete({
+      id: _id,
+      owner_id: req.user._id,
+    });
+    if (!note) {
+      return res.status(401).send();
+    }
+    res.send(note);
+  } catch (e) {
+    res.status(401).send();
+  }
+});
+
 module.exports = router;
